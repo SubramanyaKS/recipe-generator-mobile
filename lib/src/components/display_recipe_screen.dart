@@ -7,8 +7,8 @@ class DisplayRecipeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final lines = recipe.split('\n');
-    final titleLine = lines.firstWhere((line) => line.startsWith('Dish:'));
+    final lines =  recipe.split('\n');
+    final titleLine =  recipe.isNotEmpty?lines.firstWhere((line) => line.startsWith('Dish:')):'';
     final title = titleLine.replaceFirst('Dish:', '').trim();
     final steps = lines
         .skipWhile((line) => !line.startsWith('Steps:'))

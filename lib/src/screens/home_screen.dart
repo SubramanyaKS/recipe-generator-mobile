@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:recipe_generator_mobile/src/components/cusine_options.dart';
 import 'package:recipe_generator_mobile/src/components/display_recipe_screen.dart';
 import 'package:recipe_generator_mobile/src/provider/recipe_provider.dart';
-import '../components/texticon_button.dart';
+
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -13,7 +14,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _textController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     final recipeProvider = Provider.of<RecipeProvider>(context);
@@ -46,63 +46,67 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.deepOrange,
-                      foregroundColor: Colors.white,
+                  SizedBox(width: 10,),
+                  ClipOval(
+                    child: Material(
+                      color: Colors.orange, // Button color
+                      child: InkWell(
+                        splashColor: Colors.red, // Splash color
+                        onTap: () {
+                          if(_textController.text.trim().isNotEmpty) {
+                            recipeProvider.addIngredient(_textController.text.trim());
+                            _textController.clear();
+                          }
+                        },
+                        child: SizedBox(width: 56, height: 56, child: Icon(Icons.add,color: Colors.white,)),
+                      ),
                     ),
-                    onPressed: () {
-                      recipeProvider.addIngredient(_textController.text);
-                      _textController.clear();
-                    },
-                    child: const Icon(
-                      Icons.add,
-                      color: Colors.white,
-                      size: 40,
-                    ),
-                  ),
+                  )
                 ],
               ),
             ),
             const SizedBox(height: 30),
             Text(
               'Selected Ingredients:',
-              style: TextStyle(fontSize: 16),
+              style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),
             ),
-            Container(
-              color: Colors.grey[100],
-              height: 50,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: SizedBox(
-                  height: 40, // adjust as needed
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: recipeProvider.ingredients.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 4),
-                        child: TextIconButton(
-                          label: recipeProvider.ingredients[index],
-                          onPress: () {
-                            recipeProvider.removeIngredientByIndex(index);
-                          },
-                          icon: Icons.cancel_outlined,
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ),
+            recipeProvider.ingredients.isEmpty
+                ? const Text('No ingredients selected yet.')
+                : Wrap(
+              spacing: 8.0,
+              runSpacing: 4.0,
+              children: recipeProvider.ingredients.map((label) {
+                return Chip(
+                  label: Text(label),
+                  onDeleted: () {
+                    setState(() {
+                      recipeProvider.ingredients.remove(label);
+                    });
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Removed "$label"'),
+                        duration: const Duration(seconds: 1),
+                      ),
+                    );
+                  },
+                  deleteIcon: const Icon(Icons.cancel), // Custom delete icon
+                  deleteButtonTooltipMessage: 'Delete this tag', // Tooltip for accessibility
+                  backgroundColor: Colors.orangeAccent[100],
+                  // labelStyle: TextStyle(color: Colors.blue[800]),
+                );
+              }).toList(),
             ),
             const SizedBox(height: 30),
+
+            CusineOptions(),
+            const SizedBox(height: 20),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.deepOrange,
                 foregroundColor: Colors.white,
               ),
               onPressed: () {
-                recipeProvider.generateRecipe();
+               recipeProvider.generateRecipe();
               },
               child: Text(
                 'Generate',
@@ -113,7 +117,14 @@ class _HomeScreenState extends State<HomeScreen> {
               height: 30,
             ),
 
-            recipeProvider.recipe.isNotEmpty
+            // Text(
+            //   _selectedFruit == null
+            //       ? 'No fruit selected'
+            //       : 'You selected: $_selectedFruit',
+            //   style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+            // ),
+
+            recipeProvider.recipe.trim().isNotEmpty
                 ? Expanded(
                     child: DisplayRecipeScreen(recipe: recipeProvider.recipe))
                 : SizedBox.shrink(),

@@ -6,7 +6,7 @@ String convertIngredients(List<dynamic> ingredients){
   String result = ingredients.join(', ');
   return  result;
 }
-Future<String> generateRecipe(List<dynamic> ingredients) async {
+Future<String> generateRecipeFromIngredients(List<dynamic> ingredients) async {
   String res = convertIngredients(ingredients);
   ServerApiCall apiCall = ServerApiCall();
   try {
@@ -14,8 +14,20 @@ Future<String> generateRecipe(List<dynamic> ingredients) async {
     return response;
   } catch (e) {
     log('Error generating recipe: $e');
-    return 'Error generating recipe';
+    throw Exception(e);
+    // return 'Error generating recipe';
   }
+}
+
+List<String> getCuisineOptions() {
+  return [
+    'Italian',
+    'Chinese',
+    'Indian',
+    'Mexican',
+    'French',
+    'Japanese',
+  ];
 }
 
 void downloadRecipe(String recipe) {
