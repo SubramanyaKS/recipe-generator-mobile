@@ -6,11 +6,11 @@ import 'package:recipe_generator_mobile/src/utils/environment.dart';
 class ServerApiCall {
   final dio = Dio();
 
-Future<String> generateRecipe(String ingredients) async{
+Future<String> generateRecipe(String ingredients, String cuisine) async{
   try {
     final response = await dio.post(
-      '${Environment.backendUrl}/api/generate-recipe',
-      data: {'prompt': ingredients},
+      '${Environment.backendUrl}/api/recipe-generate',
+      data: {'ingredients': ingredients,'cuisine':cuisine},
       options: Options(
         headers: {
           'Content-Type': 'application/json',

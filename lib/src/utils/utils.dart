@@ -6,11 +6,11 @@ String convertIngredients(List<dynamic> ingredients){
   String result = ingredients.join(', ');
   return  result;
 }
-Future<String> generateRecipeFromIngredients(List<dynamic> ingredients) async {
-  String res = convertIngredients(ingredients);
+Future<String> generateRecipeFromIngredients(List<dynamic> ingredients,String cuisine) async {
+  String ingredientString = convertIngredients(ingredients);
   ServerApiCall apiCall = ServerApiCall();
   try {
-    String response = await apiCall.generateRecipe(res);
+    String response = await apiCall.generateRecipe(ingredientString,cuisine);
     return response;
   } catch (e) {
     log('Error generating recipe: $e');

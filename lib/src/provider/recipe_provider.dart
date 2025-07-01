@@ -38,7 +38,7 @@ class RecipeProvider with ChangeNotifier {
   }
 
   void generateRecipe() async{
-    String response = await generateRecipeFromIngredients(ingredients);
+    String response = await generateRecipeFromIngredients(ingredients,selectedcuisine);
     if(response.isEmpty){
       response = 'No recipe found for the given ingredients.';
     }
