@@ -37,6 +37,8 @@ dependencies:
   provider: ^6.1.5
   dio: ^5.8.0+1
   flutter_dotenv: ^5.2.1
+  firebase_core: ^3.15.0
+  firebase_auth: ^5.6.1
 
 dev_dependencies:
   flutter_test:
