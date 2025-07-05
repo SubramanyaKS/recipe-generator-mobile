@@ -25,6 +25,22 @@ class AuthService {
       return e.toString();
     }
   }
+
+  Future<String?> forgotPassword({required String email}) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+      return "If an account with that email exists, a password reset email has been sent.";
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'invalid-email') {
+        return 'The email address is not valid.';
+      }
+      return "An error occurred: ${e.message}";
+    } catch (e) {
+      return "An unexpected error occurred: $e";
+    }
+  }
+
+
   Future<String?> signIn({required String email, required String password}) async {
     try {
       await _auth.signInWithEmailAndPassword(
@@ -46,4 +62,7 @@ class AuthService {
   Future<void> signOut() async {
     await _auth.signOut();
   }
+
+  
+
 }
