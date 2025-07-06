@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:recipe_generator_mobile/src/utils/constant.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -13,7 +14,7 @@ class AuthService {
         email: email,
         password: password,
       );
-      return "Signed Up Successfully";
+      return signupsuccess;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         return 'The password provided is too weak.';
@@ -29,7 +30,7 @@ class AuthService {
   Future<String?> forgotPassword({required String email}) async {
     try {
       await _auth.sendPasswordResetEmail(email: email);
-      return "If an account with that email exists, a password reset email has been sent.";
+      return resetsuccess;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'invalid-email') {
         return 'The email address is not valid.';
@@ -47,7 +48,7 @@ class AuthService {
         email: email,
         password: password,
       );
-      return "Signed In Successfully";
+      return signinsuccess;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         return 'No user found for that email.';
@@ -62,7 +63,4 @@ class AuthService {
   Future<void> signOut() async {
     await _auth.signOut();
   }
-
-  
-
 }

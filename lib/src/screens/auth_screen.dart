@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:recipe_generator_mobile/src/components/bottom_card.dart';
 import 'package:recipe_generator_mobile/src/components/gradient_background.dart';
+import 'package:recipe_generator_mobile/src/screens/forgotpassword_screen.dart';
 import 'package:recipe_generator_mobile/src/screens/home_screen.dart';
 import 'package:recipe_generator_mobile/src/services/auth.dart';
 
@@ -40,7 +41,7 @@ class _AuthScreenState extends State<AuthScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(message)),
       );
-      if(_isLogin){
+      if(_isLogin && message=="Signed In Successfully"){
         Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => HomeScreen(),
@@ -109,11 +110,15 @@ class _AuthScreenState extends State<AuthScreen> {
             obscureText: true,
           ),
           const SizedBox(height: 40),
-          TextButton(
+          _isLogin?TextButton(
               onPressed: () {
-                debugPrint("Password : ${passwordController.text}");
-              },
-              child: Text("Forgot Password")),
+                Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => ForgotpasswordScreen(),
+                    ));
+
+                },
+              child: Text("Forgot Password")):SizedBox(height: 10,),
           const SizedBox(height: 30),
           ElevatedButton(
             onPressed: _submitAuthForm,

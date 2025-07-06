@@ -37,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   SizedBox(
-                    width: 300,
+                    width: 270,
                     child: TextField(
                       controller: _textController,
                       decoration: InputDecoration(
@@ -59,6 +59,21 @@ class _HomeScreenState extends State<HomeScreen> {
                           }
                         },
                         child: SizedBox(width: 56, height: 56, child: Icon(Icons.add,color: Colors.white,)),
+                      ),
+                    ),
+                  ),
+                  ClipOval(
+                    child: Material(
+                      color: Colors.orange, // Button color
+                      child: InkWell(
+                        splashColor: Colors.red, // Splash color
+                        onTap: () {
+                          if(_textController.text.trim().isNotEmpty) {
+                            recipeProvider.addIngredient(_textController.text.trim());
+                            _textController.clear();
+                          }
+                        },
+                        child: SizedBox(width: 56, height: 56, child: Icon(Icons.mic,color: Colors.white,)),
                       ),
                     ),
                   )
@@ -116,13 +131,6 @@ class _HomeScreenState extends State<HomeScreen> {
             SizedBox(
               height: 30,
             ),
-
-            // Text(
-            //   _selectedFruit == null
-            //       ? 'No fruit selected'
-            //       : 'You selected: $_selectedFruit',
-            //   style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-            // ),
 
             recipeProvider.recipe.trim().isNotEmpty
                 ? Expanded(
