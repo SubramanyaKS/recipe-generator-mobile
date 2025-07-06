@@ -39,6 +39,7 @@ dependencies:
   flutter_dotenv: ^5.2.1
   firebase_core: ^3.15.0
   firebase_auth: ^5.6.1
+  speech_to_text: ^7.1.0
 
 dev_dependencies:
   flutter_test:

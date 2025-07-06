@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:recipe_generator_mobile/src/components/bottom_card.dart';
 import 'package:recipe_generator_mobile/src/components/gradient_background.dart';
 import 'package:recipe_generator_mobile/src/screens/auth_screen.dart';
 import 'package:recipe_generator_mobile/src/services/auth.dart';
