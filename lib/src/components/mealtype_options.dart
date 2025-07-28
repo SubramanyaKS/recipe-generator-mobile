@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:recipe_generator_mobile/src/utils/utils.dart';
 import '../provider/recipe_provider.dart';
 
-class CusineOptions extends StatelessWidget {
-  const CusineOptions({super.key});
+class MealtypeOptions extends StatelessWidget {
+  const MealtypeOptions({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -12,20 +12,20 @@ class CusineOptions extends StatelessWidget {
     return Column(
       children: [
         const Text(
-          'Cuisine Options',
+          'MealType Options',
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 20),
         Wrap(
           spacing: 8.0,
           runSpacing: 4.0,
-          children: getCuisineOptions().map((cuisine) {
+          children: getMealTypeOptions().map((mealType) {
             return ChoiceChip(
-              label: Text(cuisine),
-              selected: recipeProvider.selectedcuisine == cuisine,
+              label: Text(mealType),
+              selected: recipeProvider.selectedMealType == mealType,
               onSelected: (selected) {
                 // setState(() {
-                selected ? recipeProvider.setCuisine(cuisine) : null;
+                selected ? recipeProvider.setMealType(mealType) : null;
                 // });
               },
 
@@ -34,7 +34,6 @@ class CusineOptions extends StatelessWidget {
             );
           }).toList(),
         ),
-        // Text(recipeProvider.selectedcuisine),
       ],
     );
   }

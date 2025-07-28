@@ -3,9 +3,9 @@ import 'package:provider/provider.dart';
 import 'package:recipe_generator_mobile/src/components/button_icon.dart';
 import 'package:recipe_generator_mobile/src/components/cusine_options.dart';
 import 'package:recipe_generator_mobile/src/components/display_recipe_screen.dart';
+import 'package:recipe_generator_mobile/src/components/mealtype_options.dart';
 import 'package:recipe_generator_mobile/src/provider/recipe_provider.dart';
 import 'package:recipe_generator_mobile/src/services/speech.dart';
-
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -45,7 +45,6 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {}); // To update mic icon
   }
 
-
   @override
   Widget build(BuildContext context) {
     final recipeProvider = Provider.of<RecipeProvider>(context);
@@ -56,9 +55,9 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         body: SafeArea(
             child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                        children: [
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
               const SizedBox(height: 20),
               Text(
                 'Recipe Generator',
@@ -80,52 +79,73 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                     ),
-                    SizedBox(width: 10,),
-                    ButtonIcon(onPress: () {
-                      if(_textController.text.trim().isNotEmpty) {
-                        recipeProvider.addIngredient(_textController.text.trim());
-                        _textController.clear();
-                      }
-                    }, icon: Icons.add, width: 56, height: 56,foregroundColor: Colors.white,backgroundColor: Colors.orange,),
-                    
-                    ButtonIcon(onPress: _toggleListening, icon: _speechService.isListening ? Icons.mic : Icons.mic_off,foregroundColor: Colors.white, backgroundColor: Colors.orange, width: 56, height: 56),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    ButtonIcon(
+                      onPress: () {
+                        if (_textController.text.trim().isNotEmpty) {
+                          recipeProvider
+                              .addIngredient(_textController.text.trim());
+                          _textController.clear();
+                        }
+                      },
+                      icon: Icons.add,
+                      width: 56,
+                      height: 56,
+                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.orange,
+                    ),
+                    ButtonIcon(
+                        onPress: _toggleListening,
+                        icon: _speechService.isListening
+                            ? Icons.mic
+                            : Icons.mic_off,
+                        foregroundColor: Colors.white,
+                        backgroundColor: Colors.orange,
+                        width: 56,
+                        height: 56),
                   ],
                 ),
               ),
               const SizedBox(height: 30),
               Text(
                 'Selected Ingredients:',
-                style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               recipeProvider.ingredients.isEmpty
                   ? const Text('No ingredients selected yet.')
                   : Wrap(
-                spacing: 8.0,
-                runSpacing: 4.0,
-                children: recipeProvider.ingredients.map((label) {
-                  return Chip(
-                    label: Text(label),
-                    onDeleted: () {
-                      setState(() {
-                        recipeProvider.ingredients.remove(label);
-                      });
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Removed "$label"'),
-                          duration: const Duration(seconds: 1),
-                        ),
-                      );
-                    },
-                    deleteIcon: const Icon(Icons.cancel), // Custom delete icon
-                    deleteButtonTooltipMessage: 'Delete this tag', // Tooltip for accessibility
-                    backgroundColor: Colors.orangeAccent[100],
-                    // labelStyle: TextStyle(color: Colors.blue[800]),
-                  );
-                }).toList(),
-              ),
+                      spacing: 8.0,
+                      runSpacing: 4.0,
+                      children: recipeProvider.ingredients.map((label) {
+                        return Chip(
+                          label: Text(label),
+                          onDeleted: () {
+                            setState(() {
+                              recipeProvider.ingredients.remove(label);
+                            });
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Removed "$label"'),
+                                duration: const Duration(seconds: 1),
+                              ),
+                            );
+                          },
+                          deleteIcon:
+                              const Icon(Icons.cancel), // Custom delete icon
+                          deleteButtonTooltipMessage:
+                              'Delete this tag', // Tooltip for accessibility
+                          backgroundColor: Colors.orangeAccent[100],
+                          // labelStyle: TextStyle(color: Colors.blue[800]),
+                        );
+                      }).toList(),
+                    ),
               const SizedBox(height: 30),
-              
+
               CusineOptions(),
+              const SizedBox(height: 20),
+              MealtypeOptions(),
               const SizedBox(height: 20),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -133,7 +153,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   foregroundColor: Colors.white,
                 ),
                 onPressed: () {
-                 recipeProvider.generateRecipe();
+                  recipeProvider.generateRecipe();
                 },
                 child: Text(
                   'Generate',
@@ -143,13 +163,13 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox(
                 height: 30,
               ),
-              
+
               recipeProvider.recipe.trim().isNotEmpty
                   ? DisplayRecipeScreen(recipe: recipeProvider.recipe)
                   : SizedBox.shrink(),
               // Spacer(),
-                        ],
-                      ),
-            )));
+            ],
+          ),
+        )));
   }
 }

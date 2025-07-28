@@ -5,10 +5,12 @@ class RecipeProvider with ChangeNotifier {
   final List<String> _ingredients = [];
   String _recipe = '';
   String  _selectedcuisine='';
+  String _selectedMealType='';
 
   List<String> get ingredients => _ingredients;
   String get recipe => _recipe;
   String get selectedcuisine => _selectedcuisine;
+  String get selectedMealType => _selectedMealType;
 
   void addIngredient(String ingredient) {
     if (!_ingredients.contains(ingredient)) {
@@ -37,6 +39,11 @@ class RecipeProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void setMealType(String mealtype) {
+    _selectedMealType=mealtype;
+    notifyListeners();
+  }
+
   void generateRecipe() async{
     String response = await generateRecipeFromIngredients(ingredients,selectedcuisine);
     if(response.isEmpty){
@@ -46,8 +53,6 @@ class RecipeProvider with ChangeNotifier {
       _recipe=response;
 
     }
-
-
     notifyListeners();
   }
 

@@ -29,6 +29,15 @@ List<String> getCuisineOptions() {
     'Japanese',
   ];
 }
+List<String> getMealTypeOptions (){
+  return [
+    'Breakfast',
+    'Dinner',
+    'Lunch',
+    'Snack',
+    'Dessert',
+  ];
+}
 
 void downloadRecipe(String recipe) {
   // Implement the logic to download the recipe
