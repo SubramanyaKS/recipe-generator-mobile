@@ -4,13 +4,15 @@ import 'package:recipe_generator_mobile/src/utils/utils.dart';
 class RecipeProvider with ChangeNotifier {
   final List<String> _ingredients = [];
   String _recipe = '';
-  String  _selectedcuisine='';
+  String  _selectedCuisine='';
   String _selectedMealType='';
+  String _selectedDietary='';
 
   List<String> get ingredients => _ingredients;
   String get recipe => _recipe;
-  String get selectedcuisine => _selectedcuisine;
+  String get selectedCuisine => _selectedCuisine;
   String get selectedMealType => _selectedMealType;
+  String get selectedDietary => _selectedDietary;
 
   void addIngredient(String ingredient) {
     if (!_ingredients.contains(ingredient)) {
@@ -35,7 +37,7 @@ class RecipeProvider with ChangeNotifier {
   }
 
   void setCuisine(String cuisine) {
-    _selectedcuisine=cuisine;
+    _selectedCuisine=cuisine;
     notifyListeners();
   }
 
@@ -44,8 +46,13 @@ class RecipeProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void setDietary(String dietary) {
+    _selectedDietary=dietary;
+    notifyListeners();
+  }
+
   void generateRecipe() async{
-    String response = await generateRecipeFromIngredients(ingredients,selectedcuisine);
+    String response = await generateRecipeFromIngredients(ingredients,selectedCuisine);
     if(response.isEmpty){
       response = 'No recipe found for the given ingredients.';
     }

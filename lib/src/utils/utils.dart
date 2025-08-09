@@ -38,6 +38,16 @@ List<String> getMealTypeOptions (){
     'Dessert',
   ];
 }
+List<String> getDietaryPreference (){
+  return [
+    'Vegetarian',
+    'Vegan',
+    'Keto',
+    'Gluten-free',
+    'Dairy-free',
+    'Kosher'
+  ];
+}
 
 void downloadRecipe(String recipe) {
   // Implement the logic to download the recipe

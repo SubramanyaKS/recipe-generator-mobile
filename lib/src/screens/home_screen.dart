@@ -1,11 +1,14 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe_generator_mobile/src/components/button_icon.dart';
-import 'package:recipe_generator_mobile/src/components/cusine_options.dart';
 import 'package:recipe_generator_mobile/src/components/display_recipe_screen.dart';
-import 'package:recipe_generator_mobile/src/components/mealtype_options.dart';
+import 'package:recipe_generator_mobile/src/components/drawer_component.dart';
 import 'package:recipe_generator_mobile/src/provider/recipe_provider.dart';
 import 'package:recipe_generator_mobile/src/services/speech.dart';
+import 'package:recipe_generator_mobile/src/components/option_chips.dart';
+import 'package:recipe_generator_mobile/src/utils/utils.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -27,10 +30,10 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     };
     _speechService.onError = (err) {
-      print("Speech error: $err");
+      log("Speech error: $err");
     };
     _speechService.onStatus = (status) {
-      print("Speech status: $status");
+      log("Speech status: $status");
       // setState(() {});
     };
     _speechService.initSpeech();
@@ -53,6 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
           title: Text('RapidRecipe AI'),
           backgroundColor: Colors.orange,
         ),
+        drawer: DrawerComponent(),
         body: SafeArea(
             child: SingleChildScrollView(
           child: Column(
@@ -142,10 +146,26 @@ class _HomeScreenState extends State<HomeScreen> {
                       }).toList(),
                     ),
               const SizedBox(height: 30),
-
-              CusineOptions(),
+              OptionChips(
+                title: 'Cuisine Options',
+                options: getCuisineOptions(),
+                selectedOption: recipeProvider.selectedCuisine,
+                onSelected: (cuisine) => recipeProvider.setCuisine(cuisine),
+              ),
               const SizedBox(height: 20),
-              MealtypeOptions(),
+              OptionChips(
+                title: 'Meal Type Options',
+                options: getMealTypeOptions(),
+                selectedOption: recipeProvider.selectedMealType,
+                onSelected: (mealType) => recipeProvider.setMealType(mealType),
+              ),
+              const SizedBox(height: 20),
+              OptionChips(
+                title: 'Dietary Options',
+                options: getDietaryPreference(),
+                selectedOption: recipeProvider.selectedDietary,
+                onSelected: (dietary) => recipeProvider.setDietary(dietary),
+              ),
               const SizedBox(height: 20),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
